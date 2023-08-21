@@ -15,7 +15,8 @@ import com.example.onlineseller.databinding.ActivityViewProductBinding;
 public class viewProductActivity extends AppCompatActivity {
 
     String name,price;
-   int image;
+   int image,tp;
+
    static int  count=0;
 
 
@@ -57,7 +58,13 @@ public class viewProductActivity extends AppCompatActivity {
         binding.buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(viewProductActivity.this, InvoiceActivity.class));
+//                startActivity(new Intent(viewProductActivity.this, InvoiceActivity.class));
+                Intent intent= new Intent(viewProductActivity.this,InvoiceActivity.class);
+//                intent.putExtra("TOTAL",String.valueOf(tp));
+//                intent.putExtra("PRICE",price);
+//                intent.putExtra("NAME",name);
+                startActivity(intent);
+
             }
         });
 
@@ -79,7 +86,7 @@ public class viewProductActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(count>=1){
                     count--;
-                    int tp =Integer.parseInt(price)*count;
+                     tp =Integer.parseInt(price)*count;
                     binding.countQty.setText(String.valueOf(count));
                     binding.TotalPrice.setText(String.valueOf(tp));
                 }
