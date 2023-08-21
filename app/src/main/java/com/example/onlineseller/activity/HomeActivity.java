@@ -23,7 +23,6 @@ public class HomeActivity extends AppCompatActivity implements onClickItem {
     private ArrayList<Product> list;
     private String pid;
     private ActivityHomeBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding=ActivityHomeBinding.inflate(getLayoutInflater());
@@ -32,10 +31,7 @@ public class HomeActivity extends AppCompatActivity implements onClickItem {
         onClick();
         list=new ArrayList<Product>();
         addData();
-
         addAdapter();
-
-
 
     }
 

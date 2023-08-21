@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.onlineseller.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class IntroActivity extends AppCompatActivity {
     Button button;
+
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +21,13 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
 
         button = findViewById(R.id.login);
+
+        auth=FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser()!=null){
+            startActivity(new Intent(IntroActivity.this,HomeActivity.class));
+            finish();
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,7 +17,7 @@ public class viewProductActivity extends AppCompatActivity {
     String name,price;
    int image,tp;
 
-   static int  count=0;
+  static int  count=1;
 
 
     private ActivityViewProductBinding binding;
@@ -60,9 +60,10 @@ public class viewProductActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                startActivity(new Intent(viewProductActivity.this, InvoiceActivity.class));
                 Intent intent= new Intent(viewProductActivity.this,InvoiceActivity.class);
-//                intent.putExtra("TOTAL",String.valueOf(tp));
-//                intent.putExtra("PRICE",price);
-//                intent.putExtra("NAME",name);
+                intent.putExtra("TOTAL",String.valueOf(tp));
+                intent.putExtra("PRICE",price);
+                intent.putExtra("NAME",name);
+                intent.putExtra("QUN",String.valueOf(count));
                 startActivity(intent);
 
             }
