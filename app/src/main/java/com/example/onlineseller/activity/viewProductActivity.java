@@ -7,15 +7,15 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.onlineseller.InvoiceActivity;
-import com.example.onlineseller.R;
+import com.bumptech.glide.Glide;
 import com.example.onlineseller.databinding.ActivityHomeBinding;
 import com.example.onlineseller.databinding.ActivityViewProductBinding;
 
 public class viewProductActivity extends AppCompatActivity {
 
-    String name,price;
-   int image,tp;
+    String name,price,image;
+   int tp;
+
 
   static int  count=1;
 
@@ -27,6 +27,10 @@ public class viewProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityViewProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Intent intent=getIntent();
+        image=intent.getStringExtra("PIMAGE");
+        name= intent.getStringExtra("PNAME");
+        price=intent.getStringExtra("PPRICE") ;
             setData();
 
         onClick();
@@ -34,15 +38,13 @@ public class viewProductActivity extends AppCompatActivity {
     }
 
     private void setData() {
-        Intent intent=getIntent();
-        name= intent.getStringExtra("PNAME");
-        price=intent.getStringExtra("PPRICE") ;
-        image=intent.getIntExtra("PIMAGE",0);
+
+
 
         binding.pName.setText(name);
         binding.countQty.setText(String.valueOf(count));
         binding.price.setText(price);
-        binding.pImage.setImageResource(image);
+        Glide.with(this).load(image).into(binding.pImage);
 
     }
 
@@ -64,6 +66,7 @@ public class viewProductActivity extends AppCompatActivity {
                 intent.putExtra("PRICE",price);
                 intent.putExtra("NAME",name);
                 intent.putExtra("QUN",String.valueOf(count));
+                intent.putExtra("IMAGE",image);
                 startActivity(intent);
 
             }

@@ -1,4 +1,4 @@
-package com.example.onlineseller;
+package com.example.onlineseller.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.onlineseller.activity.HomeActivity;
+import com.example.onlineseller.R;
 
 public class InvoiceActivity extends AppCompatActivity {
 
@@ -82,6 +82,7 @@ public class InvoiceActivity extends AppCompatActivity {
         qun.setText(intent.getStringExtra("QUN"));
         Log.d("TAG",qun.toString());
         total.setText(intent.getStringExtra("TOTAL"));
+        Glide.with(this).load(intent.getStringExtra("IMAGE")).into(cartimage);
 //        Picasso.get().load(intent.getStringExtra("URL")).into(cartimage);
         p=Integer.parseInt(price.getText().toString());
         t=Total*0.10;

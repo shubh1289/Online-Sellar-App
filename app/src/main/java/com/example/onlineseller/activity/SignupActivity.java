@@ -12,11 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.onlineseller.R;
+import com.example.onlineseller.modal.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
     Button signup;
@@ -54,8 +56,16 @@ public class SignupActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
-                                            startActivity(new Intent(SignupActivity.this, HomeActivity.class));
-                                            finish();
+                                            User user=new User(emailid.getText().toString().trim(),txtpassword.getText().toString().trim(),FirebaseAuth.getInstance().getUid());
+                                            FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getUid().toString())
+                                                            .setValue(user)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            startActivity(new Intent(SignupActivity.this, HomeActivity.class));
+                                                                            finish();
+                                                                        }
+                                                                    });
                                         }
                                     })
                                             .addOnFailureListener(new OnFailureListener() {

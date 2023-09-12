@@ -19,7 +19,7 @@
         android:hardwareAccelerated="false"
         tools:targetApi="31">
         <activity
-            android:name=".InvoiceActivity"
+            android:name=".activity.InvoiceActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

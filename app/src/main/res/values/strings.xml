@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Online Seller</string>
+    <string-array name="Cat">
+        <item>Mobile</item>
+        <item>Watch</item>
+        <item>Laptop</item>
+        <item>Shoes</item>
+    </string-array>
 </resources>

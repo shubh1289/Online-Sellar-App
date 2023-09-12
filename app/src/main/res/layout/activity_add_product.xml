@@ -7,23 +7,47 @@
         tools:context=".activity.AddProductActivity"
         android:background="#14406CE8">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Product"
-            android:textColor="#406CE8"
-            android:textSize="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:textStyle="bold"
-            android:shadowColor="#FFFFFF"
-            android:shadowDx="1.5"
-            android:shadowDy="1.3"
-            android:shadowRadius="2"
+
+        <LinearLayout
+            android:elevation="5dp"
+            android:background="@drawable/add_header_back"
             android:id="@+id/view2"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/gohomebtn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textAlignment="center"
+                    android:shadowColor="#FFFFFF"
+                    android:shadowDx="1.5"
+                    android:shadowDy="1.3"
+                    android:shadowRadius="2"
+                    android:text="Add Product"
+                    android:textColor="#406CE8"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+
+        </LinearLayout>
 
         <ImageView
+            android:background="@drawable/imageback"
+            android:padding="5dp"
             android:id="@+id/image"
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -31,53 +55,71 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/view2"/>
 
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                android:orientation="horizontal"
             android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/image"
-            android:layout_marginLeft="40dp"
             android:layout_marginTop="25dp"
-            android:shadowColor="#3F69E7"
-            android:shadowDx="1.5"
-            android:shadowDy="1.3"
-            android:shadowRadius="2"
-            android:text="Picture Uplode :"
-            android:textColor="#4577E8"
-            android:textSize="25dp"
+            android:layout_marginHorizontal="20dp"
+                >
+                <TextView
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image"
+                    android:shadowColor="#3F69E7"
+                    android:shadowDx="1.5"
+                    android:shadowDy="1.3"
+                    android:shadowRadius="2"
+                    android:text="Picture Uplode :"
+                    android:textColor="#4577E8"
+                    android:textSize="20dp"
 
-            />
+                    />
 
-        <Button
-            android:id="@+id/enter"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/image"
-            android:layout_toEndOf="@+id/view"
-            android:layout_marginLeft="50dp"
-            android:layout_centerHorizontal="true"
+                <Button
+                    android:id="@+id/enter"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/view"
+                    android:layout_marginLeft="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btnback"
+                    android:text="enter" />
+        </LinearLayout>
+
+        <Spinner
+            android:layout_below="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/btnback"
-            android:text="enter" />
+            android:background="@drawable/edtback"
+            android:id="@+id/productCat"
+            android:entries="@array/Cat"
+            />
 
         <EditText
             android:id="@+id/productname"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/enter"
+            android:layout_below="@+id/productCat"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/edtback"
             android:hint="Product_name"
+            android:layout_marginHorizontal="20dp"
             android:inputType="text"
             android:padding="10dp"
             android:textColorHint="#A8000000"
-
             />
 
         <EditText
             android:id="@+id/productprice"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/productname"
             android:layout_centerHorizontal="true"
@@ -85,6 +127,7 @@
             android:background="@drawable/edtback"
             android:hint="Product_price"
             android:inputType="number"
+            android:layout_marginHorizontal="20dp"
             android:padding="10dp"
             android:textColorHint="#A8000000" />
 

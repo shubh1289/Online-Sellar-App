@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,12 +19,16 @@ import com.example.onlineseller.adapter.ProductAdapter;
 import com.example.onlineseller.databinding.ActivityAddProductBinding;
 import com.example.onlineseller.modal.Product;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +37,8 @@ public class AddProductActivity extends AppCompatActivity {
     ActivityAddProductBinding binding;
     ActivityResultLauncher<String> launcher;
     FirebaseDatabase database;
-//    FirebaseStorage storage;
-    String UserId;
-
+    FirebaseStorage storage;
+    String UserId,imageName;
     Uri resultok;
 
     @Override
@@ -41,9 +46,18 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityAddProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        String id = FirebaseDatabase.getInstance().getReference().child("Product").push().getKey();
+        UserId=FirebaseDatabase.getInstance().getReference().child("Product").push().getKey();
 
         database=FirebaseDatabase.getInstance();
-//        storage=FirebaseStorage.getInstance();
+        storage=FirebaseStorage.getInstance();
+
+        binding.gohomebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
        binding.submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,44 +66,39 @@ public class AddProductActivity extends AppCompatActivity {
                 if(binding.productname.getText().toString().isEmpty() && binding.productprice.getText().toString().isEmpty()){
                     Toast.makeText(AddProductActivity.this,"Field can't be blank",Toast.LENGTH_SHORT).show();
                 }else{
-//                    final StorageReference reference=storage.getReference().child(UserId);
-//                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                        database.getReference().child("Product").child().setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void unused) {
-//                                Toast.makeText(MainActivity.this, "Image Uploded", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                            FirebaseDatabase.getInstance().getReference().child("Product").child(UserId).child("image").setValue(uri.toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    Toast.makeText(MainActivity.this,"Inserted", Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                        }
-//                    });
+                    StorageReference reference=storage.getReference().child(imageName);
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            resultok=uri;
+//                            Product item=new Product(resultok.toString());
 
-                    HashMap<String, Object> m = new HashMap<String, Object>();
-                    m.put("productname", binding.productname.getText().toString());
-                    m.put("productprice",binding.productprice.getText().toString());
-                    m.put("productid",UserId);
+                            Product item=new Product(id,binding.productname.getText().toString(),binding.productprice.getText().toString(),binding.productCat.getSelectedItem().toString(),resultok.toString());
+                            FirebaseDatabase.getInstance().getReference().child("Product").child(binding.productCat.getSelectedItem().toString()).child(id).setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isComplete()){
+                                                binding.productname.setText("");
+                                                binding.productprice.setText("");
+                                                Toast.makeText(AddProductActivity.this, "Inserted", Toast.LENGTH_SHORT).show();
+                                                onBackPressed();
+                                            }
+                                            else {
 
-//                    FirebaseDatabase.getInstance().getReference().child("Product").child(UserId).setValue(m).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            name.setText("");
-//                            price.setText("");
-//                            Toast.makeText(MainActivity.this,"Inserted", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
+                                                Toast.makeText(AddProductActivity.this, "Failed Insert", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }
+                                    });
+
+
+                        }
+                    });
 
                 }
             }
         });
         uplodeimage();
-        displayimage();
         binding.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,30 +116,23 @@ public class AddProductActivity extends AppCompatActivity {
         });
     }
 
-    private void displayimage() {
-        database.getReference().child("image").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String img=snapshot.getValue(String.class);
-//                Picasso.get().load(img).into(imageView);
-            }
 
+
+    private void imageUplode(){
+        final StorageReference reference=storage.getReference().child(imageName);
+        reference.putFile(resultok).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(AddProductActivity.this,"store completed",Toast.LENGTH_SHORT).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AddProductActivity.this,"store Failed",Toast.LENGTH_SHORT).show();
 
             }
         });
-
-    }
-
-    private void imageUplode(){
-//        final StorageReference reference=storage.getReference().child(UserId);
-//        reference.putFile(resultok).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Toast.makeText(MainActivity.this,"store completed",Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
     }
     private void uplodeimage() {
@@ -139,11 +141,32 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onActivityResult(Uri result) {
                 binding.image.setImageURI(result);
+                imageName=getFileName(result);
                 resultok=result;
-
             }
         });
 
+    }
+    public String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 

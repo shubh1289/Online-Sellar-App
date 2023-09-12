@@ -1,22 +1,40 @@
 package com.example.onlineseller.modal;
 
 public class Product {
-    int image;
-    String productname,productprice;
+    String pid;
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public Product(String pid, String productname, String productprice, String cat, String image) {
+        this.pid = pid;
+        this.productname = productname;
+        this.productprice = productprice;
+        this.cat = cat;
+        this.image = image;
+    }
+
+    String productname;
+    String productprice;
+    String cat;
+    String image;
 
     public Product() {
     }
-    public Product(int image, String productname, String productprice) {
+
+    public Product(String image) {
         this.image = image;
+    }
+
+    public Product(String productname, String productprice, String cat, String image) {
         this.productname = productname;
         this.productprice = productprice;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
+        this.cat = cat;
         this.image = image;
     }
 
@@ -34,5 +52,21 @@ public class Product {
 
     public void setProductprice(String productprice) {
         this.productprice = productprice;
+    }
+
+    public String getCat() {
+        return cat;
+    }
+
+    public void setCat(String cat) {
+        this.cat = cat;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
